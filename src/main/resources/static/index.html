@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Merlin Challenge</title>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1>Merlin Backend Code Challenge</h1>
+        </div>
+    </div>
+    <div class="row">
+        <h2>Time limit</h2>
+        <p> Do I need an umbrella today? We want to know if we need an umbrella in the morning or not
+            based on the weather forecast. The idea is to create an API that will take coordinates and send
+            those to a weather API and get a precipitation probability for that coordinates.
+            Requirements
+        <ul>
+            <li>1. You will be handling requests to GET /umbrella?latitude=51.5144&longitude=-0.0941</li>
+            <li>2. Get the location (geographical coordinates) and send to an external API that will give
+                your the weather forecast for the current day for that location
+            </li>
+            <li>3. Respond back to the client with yes for any precipitation probability equals or above 0.5
+                and false for otherwise
+            </li>
+        </ul>
+        <p><b>Consideration</b></p>
+        <ul>
+            <li>1. Any type of precipitation is considered (rain, snow, etc)</li>
+            <li>2. Days with precipitation greater or equals than 0.5, should need an umbrella</li>
+            <li>3. If no precipitation is available or the external API is unavailable, return false</li>
+        </ul>
+        <h1>External service</h1>
+        <ul>
+            <li>1. You can use any Weather provider. We recommend to use DarkSky as they have a free
+                tier and it is well documented (https://darksky.net/dev/docs)
+                For a free tier registration: https://darksky.net/dev/register
+            </li>
+
+            <h1>Stretch</h1>
+            <li>1. To use a cache system so you don't need to request the external service for the same
+                coordinates within 60 minutes, i.e., requests for coordinates A at 15:12 and another one
+                at 16:11, on the same day, should return the same results)
+            </li>
+            <li> 2. Continuous integration build & test using a cloud service, e.g., CircleCI, TravisCI,
+                etc
+            </li>
+
+            <h1>Endpoint</h1>
+            <li>We suggest the endpoint contract below but be free to implement a different one. Please,
+                specify how to query your API in the README.
+            </li>
+        </ul>
+
+
+        GET /umbrella?latitude=51.5144&longitude=-0.0941
+        Response sample
+        {
+        "umbrella": true,
+        "weather": {
+        "precipProbability": 0.9,
+        "precipType": "rain"
+        },
+        "location": {
+        "latitude": 51.5144,
+        "longitude": -0.0941
+        }
+        }
+        <p>
+
+        <h1>Useful Links</h1>
+
+        https://api.darksky.net/forecast/d46b1514f855b276459c26b9216c07c0/37.8267,-122.4233
+
+        https://darksky.net/dev/docs
+
+    </div>
+</div>
+</body>
+
+</html>

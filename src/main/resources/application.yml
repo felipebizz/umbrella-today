@@ -1,0 +1,9 @@
+#External configuration
+
+server:
+  port: 9000
+  contextPath: /forecast
+
+umbrella-today-api:
+  url: "https://api.darksky.net/forecast/"
+  key: d46b1514f855b276459c26b9216c07c0
