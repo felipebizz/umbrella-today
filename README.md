@@ -1,7 +1,9 @@
 Umbrella Today API Client 
 =================
 Java Project that return if you need to take your umbrella according to latitude and longitude.
-   
+
+[![Build Status](https://travis-ci.org/felipebizz/umbrella-today.svg?branch=master)](https://travis-ci.org/felipebizz/umbrella-today)
+
    #### Used Techonologies
    
    * Spring-boot
