@@ -3,13 +3,9 @@ package com.challenge.merlin.model;
 public class Forecast {
 
     private boolean umbrella;
-
     private double precipProbability;
-
     private String precipType;
-
     private double latitude;
-
     private double longitude;
 
 
@@ -54,5 +50,4 @@ public class Forecast {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
 }

@@ -5,7 +5,6 @@ import com.challenge.merlin.model.ForecastCache;
 import com.challenge.merlin.service.ForecastService;
 import com.google.gson.JsonObject;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 @RestController
-public class UmbrellaTodayController {
-
+class UmbrellaTodayController {
 
     @Autowired
+    private
     ForecastService forecastService;
 
     @Autowired
+    private
     CacheHelper cacheHelper;
 
     @Value("${umbrella-today-api.url}")
@@ -37,7 +38,7 @@ public class UmbrellaTodayController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/umbrella", produces = "application/json; charset=UTF-8")
     public Callable<ResponseEntity<String>> needUmbrellaToday(@RequestParam("latitude") String latitude,
-                                                              @RequestParam("longitude") String longitude) throws UnirestException {
+                                                              @RequestParam("longitude") String longitude) {
         return () -> {
 
             ForecastCache forecastCache = new ForecastCache(cacheHelper);
@@ -47,26 +48,26 @@ public class UmbrellaTodayController {
             if (cachedValue.size() == 0) {
                 HttpRequest getRequest = Unirest.get(umbrellaTodayApiUrl + secretKey + "/" + latitude + "," + longitude);
                 JSONObject responseJSONObject = getRequest.asJson().getBody().getObject();
-                if (responseJSONObject.has("code"))
-                    if (!responseJSONObject.get("code").equals("200")) {
-                        return new ResponseEntity<>(errorDefaut(), HttpStatus.OK);
-                    }
+                if (responseJSONObject.has("code") && !responseJSONObject.get("code").equals("200")) {
+                    return new ResponseEntity<>(errorDefault(), HttpStatus.OK);
+                }
 
-                responseJson = (JsonObject) forecastService.forecastMapper(responseJSONObject);
+                responseJson = forecastService.forecastMapper(responseJSONObject);
 
                 forecastCache.add(latitude + longitude, responseJson);
             }
 
-            return new ResponseEntity<>(cachedValue.size() > 0 ? cachedValue.toString() : responseJson.toString(),
+            return new ResponseEntity<>(cachedValue.size() > 0 ? cachedValue.toString() : Objects.requireNonNull(responseJson).toString(),
                     HttpStatus.OK);
         };
     }
 
     /**
      * Error Default
-     * @return
+     *
+     * @return String equals false
      */
-    private String errorDefaut() {
-        return "false";
+    private String errorDefault() {
+        return Boolean.FALSE.toString();
     }
 }

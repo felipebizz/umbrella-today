@@ -17,7 +17,10 @@ import java.util.Map;
 @Service
 public class ForecastServiceImpl implements ForecastService {
 
-    private Forecast forecast = new Forecast();
+    private static final double MAX_PROBABILITY = 0.5;
+
+    private final Forecast forecast = new Forecast();
+
 
     @Override
     public JsonObject forecastMapper(JSONObject jsonObject) {
@@ -33,8 +36,7 @@ public class ForecastServiceImpl implements ForecastService {
             throw new RuntimeJsonMappingException(e.getMessage());
         }
 
-        JsonObject asJsonObject1 = jsonParser.parse(jsonNode.toString()).getAsJsonObject();
-        return asJsonObject1;
+        return jsonParser.parse(jsonNode.toString()).getAsJsonObject();
     }
 
 
@@ -46,7 +48,7 @@ public class ForecastServiceImpl implements ForecastService {
 
             if (keyStr.equals("precipProbability")) {
                 double precipProbability = Double.parseDouble(keyValue.toString());
-                if (precipProbability >= 0.5) {
+                if (precipProbability >= MAX_PROBABILITY) {
                     forecast.setUmbrella(Boolean.TRUE);
                     forecast.setPrecipProbability(precipProbability);
                 }
@@ -69,7 +71,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     private void buildResponseJson(JSONObject jsonObject, JSONObject nodeJson) {
 
-        Map<String, Object> forecastMap = null;
+        Map<String, Object> forecastMap;
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -77,7 +79,7 @@ public class ForecastServiceImpl implements ForecastService {
                     new TypeReference<Map<String, Object>>() {
                     });
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
 
 

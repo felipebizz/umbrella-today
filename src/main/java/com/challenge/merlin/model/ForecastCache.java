@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 public class ForecastCache {
 
-    private CacheHelper cache;
+    private final CacheHelper cache;
 
     public ForecastCache(CacheHelper cache) {
         this.cache = cache;
@@ -19,7 +19,7 @@ public class ForecastCache {
      * @return if has values return a JsonObject
      */
     public JsonObject checkCachedValues(String latitude, String longitude) {
-        String coordinate = new StringBuilder().append(latitude).append(longitude).toString();
+        String coordinate = latitude + longitude;
         if (cache.getCoordinates().containsKey(coordinate))
             return cache.getCoordinates().get(coordinate);
         return new JsonObject();
